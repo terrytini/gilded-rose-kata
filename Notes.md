@@ -12,4 +12,5 @@ The goblin that insta-rages and one-shots because he doesn't believe in shared c
 <li>After finishing complete refactoring, re-ran all tests to make sure everything still worked like before.</li>
 <li>TDD - Red>Green>Refactor - wrote tests for Conjured items, made sure they failed and then wrote the class for ConjuredUpdateStrategy.</li>
 <li> In hindsight, each updateQuality method is small enough, they don't really need to be their own class. </li>
+<li> Thought about uses parallelStreams on the array loop, but I think that's overcomplicating things. Not really any difference in performance in small amounts. I did switch the for-loop just because there's absolutely no need to keep track of array index in this use case</li>
 </ol>

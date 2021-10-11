@@ -1,7 +1,5 @@
 package com.gildedrose;
 
-import java.util.Arrays;
-
 import com.gildedrose.update.AgedBrieUpdateStrategy;
 import com.gildedrose.update.BackstagePassesUpdateStrategy;
 import com.gildedrose.update.ConjuredUpdateStrategy;
@@ -21,7 +19,10 @@ class GildedRose {
 	}
 
 	public void updateQuality() {
-		Arrays.asList(items).parallelStream().forEach(item -> updateItem(item));
+		//Arrays.asList(items).parallelStream().forEach(item -> updateItem(item));
+		for(Item item : items) {
+			updateItem(item);
+		}
 	}
 
 	private void updateItem(Item item) {
