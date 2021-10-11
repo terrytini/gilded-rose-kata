@@ -1,62 +1,47 @@
 package com.gildedrose;
 
+import java.util.Arrays;
+
+import com.gildedrose.update.AgedBrieUpdateStrategy;
+import com.gildedrose.update.BackstagePassesUpdateStrategy;
+import com.gildedrose.update.ConjuredUpdateStrategy;
+import com.gildedrose.update.ItemUpdateStrategy;
+import com.gildedrose.update.SulfurasUpdateStrategy;
+
 class GildedRose {
-    Item[] items;
+	Item[] items;
 
-    public GildedRose(Item[] items) {
-        this.items = items;
-    }
+	private static final String AGED_BRIE = "Aged Brie";
+	private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+	private static final String TAFKAL80ETC_PASSES = "Backstage passes to a TAFKAL80ETC concert";
+	private static final String CONJURED = "Conjured ";
 
-    public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals("Aged Brie")
-                    && !items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (items[i].quality > 0) {
-                    if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                        items[i].quality = items[i].quality - 1;
-                    }
-                }
-            } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
+	public GildedRose(Item[] items) {
+		this.items = items;
+	}
 
-                    if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
+	public void updateQuality() {
+		Arrays.asList(items).parallelStream().forEach(item -> updateItem(item));
+	}
 
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
+	private void updateItem(Item item) {
+		ItemUpdateStrategy strategy = determineUpdateStrategy(item);
+		strategy.updateQuality(item);
+	}
 
-            if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                items[i].sellIn = items[i].sellIn - 1;
-            }
+	private ItemUpdateStrategy determineUpdateStrategy(Item item) {
+		String itemName = item.name;
+		ItemUpdateStrategy itemUpdateStrategyClass = new ItemUpdateStrategy();
+		if (itemName.equals(AGED_BRIE)) {
+			itemUpdateStrategyClass = new AgedBrieUpdateStrategy();
+		} else if (itemName.equals(SULFURAS)) {
+			itemUpdateStrategyClass = new SulfurasUpdateStrategy();
+		} else if (itemName.equals(TAFKAL80ETC_PASSES)) {
+			itemUpdateStrategyClass = new BackstagePassesUpdateStrategy();
+		} else if (itemName.startsWith(CONJURED)) {
+			itemUpdateStrategyClass = new ConjuredUpdateStrategy();
+		}
+		return itemUpdateStrategyClass;
+	}
 
-            if (items[i].sellIn < 0) {
-                if (!items[i].name.equals("Aged Brie")) {
-                    if (!items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].quality > 0) {
-                            if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                                items[i].quality = items[i].quality - 1;
-                            }
-                        }
-                    } else {
-                        items[i].quality = items[i].quality - items[i].quality;
-                    }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
-                    }
-                }
-            }
-        }
-    }
 }
