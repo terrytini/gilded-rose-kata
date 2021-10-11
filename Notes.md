@@ -11,4 +11,5 @@ The goblin that insta-rages and one-shots because he doesn't believe in shared c
 <li>The giant tree of if is hard to understand and even harder to maintain. Especially, if we want to add more functionality later. Decided to go with Strategy Design Pattern for this.</li> 
 <li>After finishing complete refactoring, re-ran all tests to make sure everything still worked like before.</li>
 <li>TDD - Red>Green>Refactor - wrote tests for Conjured items, made sure they failed and then wrote the class for ConjuredUpdateStrategy.</li>
+<li> In hindsight, each updateQuality method is small enough, they don't really need to be their own class. </li>
 </ol>
